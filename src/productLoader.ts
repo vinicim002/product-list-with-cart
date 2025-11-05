@@ -1,4 +1,5 @@
 import type { Product } from './types/Product';
+import { cart } from './cart';
 
 export const setupProductList = async () => {
   const gridSobremesas = document.getElementById('gridSobremesas');
@@ -15,7 +16,7 @@ export const setupProductList = async () => {
       .map(
         (p) => `
           <!--Card Sobremesa-->
-          <div class="sobremesa w-full">
+          <div class="sobremesa w-full" data-id="${p.id}">
             <!--Img sobremesa-->
             <div
               class="img-sobremesa bg-center bg-no-repeat bg-cover aspect-square rounded-3xl relative mb-6"
@@ -42,6 +43,8 @@ export const setupProductList = async () => {
         `,
       )
       .join('');
+
+    cart();
   } catch (err) {
     console.error(err);
   }
