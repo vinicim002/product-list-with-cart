@@ -22,7 +22,7 @@ export const setupProductList = async () => {
               class="img-sobremesa bg-center bg-no-repeat bg-cover aspect-square rounded-3xl relative mb-6"
               style="background-image: url('${p.image.desktop}')"
 >
-              <!--Btn cart-->
+               <!--Btn cart-->
               <button
                 class="btn-add-to-cart bg-rose-50 text-center w-1/2 absolute bottom-0 left-0 translate-x-1/2 translate-y-1/2 rounded-3xl border border-red-50 px-2 py-2.5 flex items-center justify-center gap-x-3 cursor-pointer"
               >

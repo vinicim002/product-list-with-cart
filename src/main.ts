@@ -5,3 +5,10 @@ import { setupProductList } from './productLoader';
 document.addEventListener('DOMContentLoaded', () => {
   setupProductList();
 });
+
+
+
+
+
+
+              
