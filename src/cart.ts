@@ -1,4 +1,5 @@
 // import type { Product } from './types/Product';
+import type { Lista } from './types/Lista';
 
 export const cart = () => {
   //Quando o user clicar no btn
@@ -9,17 +10,20 @@ export const cart = () => {
   const sobremesa = document.querySelectorAll('.sobremesa');
   const btnsAddCart = document.querySelectorAll('.btn-add-to-cart');
 
-  if (!sobremesa) return;
+  if (!sobremesa) console.log('Nao foram encontrads produtos');
+  
+  const listaArray: Lista[] = []; 
+  if(!localStorage.getItem('listaDeCompras')) {
+    localStorage.setItem('listaDeCompras', JSON.stringify(listaArray));
+  }
 
-  let id: string|undefined  = '';
   //Pecorrendo todos o botoes
   btnsAddCart.forEach((btn) => {
     //Pegando o botao clicado
     btn.addEventListener('click', () => {
       const card = btn.closest('.sobremesa') as HTMLElement;
-      id = card.dataset.id;
-
-      
+      const id = card.dataset.id;
+      //Criar uma lista caso nao exista e caso exista verificar se esse id ja esta na lista se estiver apenas adiconar a quantidade senao existir mudar o estado do botao e adcionar a quantridaed 
     });
   });
 };
