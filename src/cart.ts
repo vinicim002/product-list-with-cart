@@ -11,11 +11,10 @@ export const cart = () => {
   const btnsAddCart = document.querySelectorAll('.btn-add-to-cart');
 
   if (!sobremesa) console.log('Nao foram encontrads produtos');
-  
-  const listaArray: Lista[] = []; 
-  if(!localStorage.getItem('listaDeCompras')) {
-    localStorage.setItem('listaDeCompras', JSON.stringify(listaArray));
-  }
+
+  const listaDeCompras: Lista[] = JSON.parse(
+    localStorage.getItem('listaDeCompras') || '[]',
+  );
 
   //Pecorrendo todos o botoes
   btnsAddCart.forEach((btn) => {
@@ -23,7 +22,20 @@ export const cart = () => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.sobremesa') as HTMLElement;
       const id = card.dataset.id;
-      //Criar uma lista caso nao exista e caso exista verificar se esse id ja esta na lista se estiver apenas adiconar a quantidade senao existir mudar o estado do botao e adcionar a quantridaed 
+      if (!id) return;
+
+      const itemIndex = listaDeCompras.findIndex((item) => item.id === id);
+
+      if (itemIndex > -1) {
+        // Item ja existe na lista, incrementar a quantidade
+        listaDeCompras[itemIndex].quantidade += 1;
+      } else {
+        // Item nao existe na lista, adicionar novo item
+        listaDeCompras.push({ id: id, quantidade: 1 });
+      }
+
+      localStorage.setItem('listaDeCompras', JSON.stringify(listaDeCompras));
+      console.log(listaDeCompras);
     });
   });
 };
