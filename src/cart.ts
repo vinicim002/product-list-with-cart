@@ -1,52 +1,82 @@
-// import type { Product } from './types/Product';
+import { setupButtonStates } from './buttonStates';
 import type { Lista } from './types/Lista';
 
 export const cart = () => {
-  //Quando o user clicar no btn
-  //preciso pegar qual produto foi adicionado (id)
-  //preciso armazenar a quantidadde desse produto
-  //preciso multiplicar o valor unitario pela qntd desse produto
-  //preciso mostrar no cart as info do produto
-  const sobremesa = document.querySelectorAll('.sobremesa');
   const btnsAddCart = document.querySelectorAll('.btn-add-to-cart');
 
-  if (!sobremesa) console.log('Nao foram encontrads produtos');
-
-  const listaDeCompras: Lista[] = JSON.parse(
-    localStorage.getItem('listaDeCompras') || '[]',
-  );
-
-  //Pecorrendo todos o botoes
+  // ➜ Adiciona item pela primeira vez
   btnsAddCart.forEach((btn) => {
-    //Pegando o botao clicado
     btn.addEventListener('click', () => {
+      // --- Se o botão NÃO é mais Add to Cart, sair ---
+      if (!btn.innerHTML.includes('add_shopping_cart')) {
+        return;
+      }
+
+      const listaDeCompras: Lista[] = JSON.parse(
+        localStorage.getItem('listaDeCompras') || '[]',
+      );
+
       const card = btn.closest('.sobremesa') as HTMLElement;
-      const id = card.dataset.id;
+      const id = card?.dataset?.id;
       if (!id) return;
 
-      const itemIndex = listaDeCompras.findIndex((item) => item.id === id);
+      const index = listaDeCompras.findIndex((item) => item.id === id);
 
-      if (itemIndex > -1) {
-        // Item ja existe na lista, incrementar a quantidade
-        listaDeCompras[itemIndex].quantidade += 1;
+      if (index === -1) {
+        listaDeCompras.push({ id, quantidade: 1 });
       } else {
-        // Item nao existe na lista, adicionar novo item
-        listaDeCompras.push({ id: id, quantidade: 1 });
+        listaDeCompras[index].quantidade++;
       }
 
       localStorage.setItem('listaDeCompras', JSON.stringify(listaDeCompras));
-      console.log(listaDeCompras);
+      setupButtonStates();
     });
   });
-};
 
-// <!--Btn cart-->
-//              <button
-//                 class="btn-add-to-cart bg-red-50 text-center w-1/2 absolute bottom-0 left-0 translate-x-1/2 translate-y-1/2 rounded-3xl border border-red-50 px-4 py-2.5 flex items-center justify-center gap-x-3"
-//               >
-//               <div class="flex justify-between w-full">
-//                 <img src="/images/icon-increment-quantity.svg" alt="" class="cursor-pointer">
-//                 <p class="text-rose-900 text-base font-semibold text-center">1</p>
-//                 <img src="/images/icon-decrement-quantity.svg" alt="" class="cursor-pointer">
-//               </div>
-//               </button>
+  // ➜ Incrementar / Decrementar
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+
+    const listaDeCompras: Lista[] = JSON.parse(
+      localStorage.getItem('listaDeCompras') || '[]',
+    );
+
+    // INCREMENTAR
+    if (
+      target instanceof HTMLImageElement &&
+      target.src.includes('icon-increment-quantity.svg')
+    ) {
+      const card = target.closest('.sobremesa') as HTMLElement;
+      const id = card?.dataset?.id;
+      if (!id) return;
+
+      const index = listaDeCompras.findIndex((item) => item.id === id);
+      if (index > -1) listaDeCompras[index].quantidade++;
+
+      localStorage.setItem('listaDeCompras', JSON.stringify(listaDeCompras));
+      setupButtonStates();
+    }
+
+    // DECREMENTAR
+    if (
+      target instanceof HTMLImageElement &&
+      target.src.includes('icon-decrement-quantity.svg')
+    ) {
+      const card = target.closest('.sobremesa') as HTMLElement;
+      const id = card?.dataset?.id;
+      if (!id) return;
+
+      const index = listaDeCompras.findIndex((item) => item.id === id);
+      if (index > -1) {
+        listaDeCompras[index].quantidade--;
+
+        if (listaDeCompras[index].quantidade <= 0) {
+          listaDeCompras.splice(index, 1);
+        }
+      }
+
+      localStorage.setItem('listaDeCompras', JSON.stringify(listaDeCompras));
+      setupButtonStates();
+    }
+  });
+};
