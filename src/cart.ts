@@ -87,10 +87,26 @@ export const cart = () => {
     const listaDeCompras: Lista[] = JSON.parse(
       localStorage.getItem('listaDeCompras') || '[]',
     );
-    const cartCount = document.querySelector('.qtd-produtos') as HTMLSpanElement;
-    const totalItems = listaDeCompras.reduce((acc, item) => acc + item.quantidade, 0);
+    const cartCount = document.querySelector(
+      '.qtd-produtos',
+    ) as HTMLSpanElement;
+    const totalItems = listaDeCompras.reduce(
+      (acc, item) => acc + item.quantidade,
+      0,
+    );
     cartCount.textContent = `(${totalItems.toString()})`;
-  }
 
-  atualizaCart();
+    const divCartItems = document.querySelector(
+      '.cart-items',
+    ) as HTMLDivElement;
+
+    if (totalItems === 0) {
+      divCartItems.innerHTML = `
+      <div class="flex flex-col justify-center items-center gap-y-3" id="empty-cart">
+        <img src="src/assets/img/illustration-empty-cart.svg" alt="" class="w-1/3">
+        <p class="text-base text-rose-300 font-bold">Your added items will appear here</p>
+      </div>
+    `;
+    }
+  };
 };
