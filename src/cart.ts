@@ -30,6 +30,7 @@ export const cart = () => {
 
       localStorage.setItem('listaDeCompras', JSON.stringify(listaDeCompras));
       setupButtonStates();
+      atualizaCart();
     });
   });
 
@@ -55,6 +56,7 @@ export const cart = () => {
 
       localStorage.setItem('listaDeCompras', JSON.stringify(listaDeCompras));
       setupButtonStates();
+      atualizaCart();
     }
 
     // DECREMENTAR
@@ -77,6 +79,18 @@ export const cart = () => {
 
       localStorage.setItem('listaDeCompras', JSON.stringify(listaDeCompras));
       setupButtonStates();
+      atualizaCart();
     }
   });
+
+  const atualizaCart = () => {
+    const listaDeCompras: Lista[] = JSON.parse(
+      localStorage.getItem('listaDeCompras') || '[]',
+    );
+    const cartCount = document.querySelector('.qtd-produtos') as HTMLSpanElement;
+    const totalItems = listaDeCompras.reduce((acc, item) => acc + item.quantidade, 0);
+    cartCount.textContent = `(${totalItems.toString()})`;
+  }
+
+  atualizaCart();
 };
