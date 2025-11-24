@@ -87,26 +87,53 @@ export const cart = () => {
     const listaDeCompras: Lista[] = JSON.parse(
       localStorage.getItem('listaDeCompras') || '[]',
     );
-    const cartCount = document.querySelector(
-      '.qtd-produtos',
-    ) as HTMLSpanElement;
+
     const totalItems = listaDeCompras.reduce(
       (acc, item) => acc + item.quantidade,
       0,
     );
-    cartCount.textContent = `(${totalItems.toString()})`;
+
+    const cartCount = document.querySelector(
+      '.qtd-produtos',
+    ) as HTMLSpanElement;
+    cartCount.textContent = `(${totalItems})`;
 
     const divCartItems = document.querySelector(
       '.cart-items',
     ) as HTMLDivElement;
 
+    // Carrinho vazio
     if (totalItems === 0) {
       divCartItems.innerHTML = `
-      <div class="flex flex-col justify-center items-center gap-y-3" id="empty-cart">
-        <img src="src/assets/img/illustration-empty-cart.svg" alt="" class="w-1/3">
+      <div class="flex flex-col justify-center items-center gap-y-3">
+        <img src="/public/images/illustration-empty-cart.svg" class="w-1/3">
         <p class="text-base text-rose-300 font-bold">Your added items will appear here</p>
       </div>
     `;
+      return;
     }
+
+    // Carrinho com itens (dinâmico futuramente)
+    divCartItems.innerHTML = `
+    <div class="flex flex-col gap-y-3">
+      <ul class="cart-list"></ul>
+
+      <div class="flex flex-row justify-between items-center mb-3">
+        <p class="text-base text-rose-900 font-normal">Order Total</p>
+        <h2 class="text-3xl font-bold text-rose-900 total-price">$0.00</h2>
+      </div>
+
+      <div class="flex flex-row justify-center items-center gap-x-2 bg-rose-100 p-4 rounded-xl mb-3">
+        <img src="src/assets/img/icon-carbon-neutral.svg" alt="" />
+        <p>This is a <span class="font-semibold text-rose-900">carbon-neutral</span> delivery</p>
+      </div>
+
+      <button class="bg-red-50 text-rose-50 p-4 rounded-4xl cursor-pointer">
+        Confirm Order
+      </button>
+    </div>
+  `;
   };
+
+  atualizaCart();
 };
