@@ -39,6 +39,72 @@
           <div class="cart-items flex flex-col gap-y-3"></div>
         </div>
       </section>
+
+      <div
+        id="orderOverlay"
+        class="fixed inset-0 bg-rose-900/40 flex items-center justify-center"
+      >
+        <section
+          class="bg-rose-50 p-6 rounded-3xl flex flex-col w-1/2 gap-y-6"
+          id="orderConfirmed"
+        >
+          <img
+            src="./public/images/icon-order-confirmed.svg"
+            alt=""
+            class="w-16"
+          />
+          <div class="flex flex-col gap-y-3">
+            <h3 class="text-3xl font-bold text-rose-900">Order Confirmed</h3>
+            <p class="text-rose-500">We hope you enjoy your food</p>
+          </div>
+          <div class="listConfirm">
+            <ul class="bg-rose-100 p-6 rounded-2xl">
+              <li class="flex items-center border-b mb-2 pb-2 border-rose-300">
+                <img
+                  src="/public/images/image-baklava-desktop.jpg"
+                  alt=""
+                  class="w-28 h-28 mr-5"
+                />
+                <div class="flex items-center justify-between w-full">
+                  <div>
+                    <p class="text-rose-900 font-medium">Classic Tiramisu</p>
+                    <p>
+                      <span class="pr-3 text-red-50 font-medium">1x</span
+                      ><span class="text-rose-500">@ $5.50</span>
+                    </p>
+                  </div>
+                  <p class="font-medium text-rose-900">$5.50</p>
+                </div>
+              </li>
+
+              <li class="flex items-center border-b mb-2 pb-2 border-rose-300">
+                <img
+                  src="/public/images/image-baklava-desktop.jpg"
+                  alt=""
+                  class="w-28 h-28 mr-5"
+                />
+                <div class="flex items-center justify-between w-full">
+                  <div>
+                    <p class="text-rose-900 font-medium">Classic Tiramisu</p>
+                    <p>
+                      <span class="pr-3 text-red-50 font-medium">1x</span
+                      ><span class="text-rose-500">@ $5.50</span>
+                    </p>
+                  </div>
+                  <p class="font-medium text-rose-900">$5.50</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <button
+            type="button"
+            class="bg-red-50 text-rose-50 p-4 rounded-4xl cursor-pointer btnConfirm w-full mx-auto font-medium"
+          >
+            Start New Order
+          </button>
+        </section>
+      </div>
     </main>
 
     <!-- Vanilla Bean Crème Brûlée
@@ -87,7 +153,7 @@
     <div class="attribution">
       Challenge by
       <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>.
-      Coded by <a href="#">Your Name Here</a>.
+      Coded by <a href="#">Vinicius</a>.
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

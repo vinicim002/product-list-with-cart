@@ -154,7 +154,7 @@ export const cart = () => {
         </div>
       </div>
 
-      <button type="button" class="btn-remove-item" data-id="${item.id}">X</button>
+      <button type="button" class="btn-remove-item cursor-pointer" data-id="${item.id}">X</button>
     `;
 
       ul.appendChild(li);
@@ -171,8 +171,61 @@ export const cart = () => {
       <p>This is a <span class="font-semibold text-rose-900">carbon-neutral</span> delivery</p>
     </div>
 
-    <button type="submit" class="bg-red-50 text-rose-50 p-4 rounded-4xl cursor-pointer">Confirm Order</button>
+    <button type="submit" class="bg-red-50 text-rose-50 p-4 rounded-4xl cursor-pointer btnConfirm">Confirm Order</button>
   `;
+
+    const btnRemoveItem = document.querySelectorAll(
+      '.btn-remove-item',
+    ) as NodeListOf<HTMLButtonElement>;
+
+    btnRemoveItem.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = String(btn.dataset.id);
+        if (!id) return;
+
+        const index = listaDeCompras.findIndex(
+          (item) => String(item.id) === id,
+        );
+
+        if (index > -1) {
+          listaDeCompras.splice(index, 1);
+          localStorage.setItem(
+            'listaDeCompras',
+            JSON.stringify(listaDeCompras),
+          );
+
+          const productCard = document.querySelector(
+            `.sobremesa[data-id="${id}"]`,
+          ) as HTMLElement;
+
+          if (productCard) {
+            const btnAdd = productCard.querySelector(
+              '.btn-add-to-cart',
+            ) as HTMLButtonElement;
+
+            if (btnAdd) {
+              btnAdd.innerHTML = `
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+                <p class="text-rose-900 text-base font-semibold text-center">Add to Cart</p>
+              `;
+
+              btnAdd.classList.remove('bg-red-50');
+              btnAdd.classList.add('bg-rose-50', 'cursor-pointer');
+            }
+          }
+
+          setupButtonStates();
+          atualizaCart();
+        }
+      });
+    });
+
+    const btnConfirm = document.querySelector('.btnConfirm') as HTMLButtonElement;
+
+    btnConfirm.addEventListener('click', () => {
+      
+    })
+
   };
 
   atualizaCart();
