@@ -218,14 +218,97 @@ export const cart = () => {
           atualizaCart();
         }
       });
+      return totalOrder;
     });
 
-    const btnConfirm = document.querySelector('.btnConfirm') as HTMLButtonElement;
+    const btnConfirm = document.querySelector(
+      '.btnConfirm',
+    ) as HTMLButtonElement;
+    const orderOverlay = document.querySelector(
+      '#orderOverlay',
+    ) as HTMLDivElement;
 
     btnConfirm.addEventListener('click', () => {
-      
-    })
+      const listaDeCompras: Lista[] = JSON.parse(
+        localStorage.getItem('listaDeCompras') || '[]',
+      );
 
+      orderOverlay.classList.remove('hidden');
+      orderOverlay.classList.add('flex');
+
+      // pegar UL existente dentro de .listConfirm
+      const ul = document.querySelector('.listConfirm ul') as HTMLUListElement;
+
+      // limpar antes de montar
+      ul.innerHTML = '';
+
+      listaDeCompras.forEach((item) => {
+        const produto = products.find((p) => String(p.id) === item.id);
+        if (!produto) return;
+
+        const li = document.createElement('li');
+        li.classList.add(
+          'flex',
+          'items-center',
+          'border-b',
+          'mb-2',
+          'pb-2',
+          'border-rose-300',
+        );
+
+        li.innerHTML = `
+      <img
+        src="${produto.image.desktop}"
+        alt=""
+        class="w-28 h-28 mr-5"
+      />
+      <div class="flex items-center justify-between w-full">
+        <div>
+          <p class="text-rose-900 font-medium">${produto.name}</p>
+          <p>
+            <span class="pr-3 text-red-50 font-medium">${item.quantidade}x</span>
+            <span class="text-rose-500">@ $${produto.price.toFixed(2)}</span>
+          </p>
+        </div>
+        <p class="font-medium text-rose-900">
+          $${(produto.price * item.quantidade).toFixed(2)}
+        </p>
+      </div>
+    `;
+
+        ul.appendChild(li);
+      });
+
+      const footerTotal = document.querySelector(
+        '.footerTotal',
+      ) as HTMLDivElement;
+
+      footerTotal.innerHTML = `
+         <p class="text-2xl text-rose-900">Order Total</p>
+          <p class="text-3xl font-bold text-rose-900">$${totalOrder.toFixed(2)}</p>
+      `;
+    });
+
+    orderOverlay.addEventListener('click', (e) => {
+      if (e.target === orderOverlay) {
+        orderOverlay.classList.remove('flex');
+        orderOverlay.classList.add('hidden');
+      }
+    });
+
+    const btnConfirmFinal = document.querySelector(
+      '.btnConfirmFinal',
+    ) as HTMLButtonElement;
+
+    btnConfirmFinal.addEventListener('click', () => {
+      localStorage.removeItem('listaDeCompras');
+
+      orderOverlay.classList.remove('flex');
+      orderOverlay.classList.add('hidden');
+
+      setupButtonStates();
+      atualizaCart();
+    });
   };
 
   atualizaCart();

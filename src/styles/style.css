@@ -32,3 +32,7 @@ html {
     'opsz' 24;
   color: var(--color-red-50);
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
